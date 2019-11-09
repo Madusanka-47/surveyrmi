@@ -28,19 +28,16 @@ extends UnicastRemoteObject implements RemoteQuestions{
 	 */
 	QuestionServerImplementation() throws RemoteException {
 		super();
-		MongoConnector dbo =  new MongoConnector();
-		
 		System.out.println("QuestionServerImplementation Created");
+		//TODO: this needs to change 
 		String[] answers = {"Yes", "No", "Maybe" }; 
-
-		Question question1 = new Question("Are you happy now?", answers ); 
-		myQuestions.add(question1); 
-
-		Question question2 = new Question("Do you like Java?", answers );
-		myQuestions.add(question2); 
-
-		Question question3 = new Question("Do you understand event-driven programming?", answers );
-		myQuestions.add(question3); 
+		/**
+		 * below implementaion added to extract the data from the database @Madusanka47
+		 */
+		MongoConnector dbo =  new MongoConnector();
+		for (org.bson.Document a : dbo.getBasicQuestions()) {
+			myQuestions.add(new Question((String) a.get("Question"), answers));
+		}
 	}
 
 	/**
@@ -65,11 +62,28 @@ extends UnicastRemoteObject implements RemoteQuestions{
 		myQuestions.elementAt(i).addAnswer(answer);
 	}
 	/**
+	 * below method create a new question in the database
 	 * Implementation of remote interface method. 
 	 */	
+	@Override
+	public void createNewQuestion(int i, String question, String type) throws RemoteException {
+		myQuestions.elementAt(i).addNewQuestion(question, type);
+	}
+	/**
+	 * below method store all the answers which user has been given
+	 * Implementation of remote interface method. 
+	 */	
+	@Override
+	public void storeUserAnswers(int i, String answer) throws RemoteException {
+		
+	}
+	/**
+	 * Implementation of remote interface method. 
+	 */
 	@Override
 	public Vector<Question> getData() { 
 		return myQuestions; 
 	}
+	
 
 }

@@ -30,9 +30,23 @@ public interface RemoteQuestions extends Remote {
 	 */
 	void submitAnswer(int i, String answer) throws RemoteException;  
 	/**
-	 * Returns the answers to the questions given. 
-	 * @return answers to the questions. 
+	 * Create a new questionar in the db. 
+	 * @return 
 	 * @throws RemoteException
 	 */
-	public Vector<Question> getData() throws RemoteException; 
+	void createNewQuestion(int i, String question, String type) throws RemoteException;
+	/**
+	 * Store the relavent answers that user has been given 
+	 * @return 
+	 * @throws RemoteException
+	 */
+	void storeUserAnswers(int i, String answer) throws RemoteException;  
+	/**
+	 * Create a new question instance in the backend. 
+	 * @return 
+	 * @throws RemoteException
+	 */
+	
+	public Vector<Question> getData() throws RemoteException;
+	
 }
