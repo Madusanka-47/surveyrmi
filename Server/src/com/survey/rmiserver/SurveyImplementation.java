@@ -6,7 +6,7 @@ import java.util.Vector;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.survey.mongoclient.MongoConnector;
+import com.survey.mongoclient.SurveyQuestionService;
 import com.survey.rmiinterface.Question;
 import com.survey.rmiinterface.RemoteQuestions;
 
@@ -18,14 +18,14 @@ public class SurveyImplementation extends UnicastRemoteObject implements RemoteQ
     SurveyImplementation() throws RemoteException {
         super();
         // System.out.println("QuestionServerImplementation Created");
-        String[] answers = new String[2];
+        
 
-        MongoConnector dbo = new MongoConnector();
-        for (org.bson.Document a : dbo.getBasicQuestions()) {
+        SurveyQuestionService svy = new SurveyQuestionService();
+        for (org.bson.Document a : svy.getBasicQuestions()) {
             List<String> quesOptions = new ArrayList<String>();
             quesOptions = (List<String>) a.get("Answer");
+            String[] answers = new String[quesOptions.size()];
             answers = quesOptions.toArray(answers);
-            System.out.println(answers[0]);
             myQuestions.add(new Question((String) a.get("Question"), answers));
         }
     }

@@ -9,6 +9,7 @@ import javax.swing.text.Document;
 
 // import com.mongodb.MongoClient;
 import com.survey.mongoclient.MongoConnector;
+import com.survey.mongoclient.SurveyQuestionService;
 // import com.survey.rmiinterface.PublicEnum.QuestionType;
 import com.survey.rmiinterface.PublicEnum.Option;
 
@@ -100,8 +101,8 @@ public class Question implements Serializable {
 			optionList.add(opt_.getOption());
 		}
 		try {
-			MongoConnector dbo = new MongoConnector();
-			dbo.addToQuestionPane(questionList, optionList);
+			SurveyQuestionService svy = new SurveyQuestionService();
+			svy.addToQuestionPane(questionList, optionList);
 
 		} catch (Exception ex) {
 			System.out.println(ex);
@@ -110,9 +111,13 @@ public class Question implements Serializable {
 }
 
 
-// class QueTest {
-// 	public static void main(String[] args) {
-// 		addQuestionToSurvey("I am in", "CHOICE2")
-
-// 	}
-// }
+/**
+ * Debug main for SurveyQuestionService 
+ * Remove once the implementaion completed
+ * */
+class QuestService {
+	public static void main(String[] args) {
+       
+        
+	}
+}
