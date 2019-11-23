@@ -39,9 +39,15 @@ public class SurveyImplementation extends UnicastRemoteObject implements RemoteQ
     public int getNumberOfQuestions() throws RemoteException {
         return myQuestions.size();
     }
-    // @Override
-    // public Vector<Question> getData() {
-    // return myQuestions;
-    // }
+
+    @Override
+	public void submitAnswer(int i, String answer) throws RemoteException {
+		myQuestions.elementAt(i).addAnswer(answer);
+    }
+    
+    @Override
+    public Vector<Question> getData() {
+    return myQuestions;
+    }
 
 }

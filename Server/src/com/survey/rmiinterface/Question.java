@@ -5,12 +5,8 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 
-import javax.swing.text.Document;
-
-// import com.mongodb.MongoClient;
-import com.survey.mongoclient.MongoConnector;
+import com.survey.mongoclient.SurveyAnswerService;
 import com.survey.mongoclient.SurveyQuestionService;
-// import com.survey.rmiinterface.PublicEnum.QuestionType;
 import com.survey.rmiinterface.PublicEnum.Option;
 
 public class Question implements Serializable {
@@ -18,7 +14,8 @@ public class Question implements Serializable {
 	private static final long serialVersionUID = -7273230871957691871L;
 	private String[] answers;
 	private String questionText;
-	// private Hashtable<String, Integer> frequencies = new Hashtable<String,
+	private Hashtable<String, Integer> frequencies = new Hashtable<String, Integer>();
+	
 	// Integer>();
 
 	public Question(String questionText, String[] answers) {
@@ -34,36 +31,22 @@ public class Question implements Serializable {
 	public String[] getAnswers() {
 		return answers;
 	}
-	// public void addNewQuestion(String question, String type) {
 
-	// /*switch ((QuestionType.valueOf(type))) {
-	// case Matching:
-	// // code block
-	// break;
-	// case MultipleChoice:
-	// // code block
-	// break;
-	// case Option:
-	// // code block
-	// break;
-	// case TrueFalse:
-	// // code block
-	// break;
-	// default:
-	// // code block
-	// }*/
-
-	// try {
-	// //TODO: This need to change properly
-	// String[] samples = {"Yes", "No", "Maybe"};
-	// int a = new MongoConnector().addQuestion(question, samples);
-
-	// } catch (Exception e) {
-	// // TODO: handle exception
-	// }
-
-	// }
-
+	public int getFrequency(String answer) {
+		Integer n = frequencies.get(answer);
+		if (n == null)
+			return 0;
+		else
+			return n;
+	}
+	
+	public void addAnswer(String answer) {
+		int n = getFrequency(answer);
+		frequencies.put(answer, n + 1);
+		SurveyAnswerService aswr = new SurveyAnswerService();
+		aswr.addToAnswerPane(answer, 1, 1 );
+	}
+	
 	public void addQuestionToSurvey(String questionDesc, String option) {
 
 		List<String[]> optionList = new ArrayList<>();
