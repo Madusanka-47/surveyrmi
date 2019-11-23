@@ -14,9 +14,38 @@ import static com.mongodb.client.model.Filters.eq;
 public class SurveyAccessService {
 
     private static final String collectionName = "access_pane";
+    
+    public String getUserAccessHash(String userid){
+        try {
+            MongoConnector dbo = new MongoConnector();
+            MongoDatabase database = dbo.getConnection();
+            Document usrDoc = database.getCollection(collectionName).find(eq("userid", userid)).first();
+            return  usrDoc.get("password").toString();
+        } catch (Exception ex) {
+            System.out.println(ex);
+            return null;
+        } finally {
+
+        }
+    }
+
+    public String getUserIdByUserName(String usrname) {
+        try {
+            MongoConnector dbo = new MongoConnector();
+            MongoDatabase database = dbo.getConnection();
+            Document usrDoc = database.getCollection(collectionName).find(eq("username", usrname)).first();
+            return  usrDoc.get("userid").toString();
+        } catch (Exception ex) {
+            System.out.println(ex);
+            return null;
+        } finally {
+
+        }
+    }
 
     public int createPaneUser(String currntUserName, String usrname, String pswd, boolean isSuper) {
         try {
+            byte[] salt = new byte[0];
             MongoConnector dbo = new MongoConnector();
             MongoDatabase database = dbo.getConnection();
             MongoCollection<org.bson.Document> collection = database.getCollection(collectionName);
@@ -30,7 +59,7 @@ public class SurveyAccessService {
                         Document isAvilable = collection.find(eq("username", usrname)).first();
                         if (isAvilable == null) {
                             SurveyLogingService secure = new SurveyLogingService();
-                            String hashcode = secure.encryptLogings(pswd, userid, null, true);
+                            String hashcode = secure.encryptLogings(pswd, userid, salt, true);
                             if (hashcode != null) {
                                 newUser.add(new Document("userid", userid).append("username", usrname)
                                         .append("password", hashcode).append("superuser", isSuper));
@@ -62,6 +91,7 @@ public class SurveyAccessService {
 class StartAccessService {
     public static void main(String[] args) {
         SurveyAccessService acc = new SurveyAccessService();
-        acc.createPaneUser("admin", "Madusanka47", "Name128$", false);
+        System.out.println(acc.getUserIdByUserName("dulanjan22"));
+
     }
 }

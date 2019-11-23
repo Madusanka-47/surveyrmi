@@ -39,9 +39,10 @@ public class SurveyAnswerService {
                 collection.updateOne(eq("userid", userid), new Document("$set", new Document("response", response)));
                 return 1;
             } else {
-                // throw new Exception("Empty description");
+                throw new Exception("Empty description");
             }
-
+        } catch (Exception ex) {
+            System.out.println(ex);
         } finally {
 
         }

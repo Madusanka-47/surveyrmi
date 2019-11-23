@@ -20,7 +20,7 @@ public class SurveyLogingService {
         String hashcode = null;
         try {
             byte[] salt;
-            if (s4lt.length < 0) {
+            if (isStore) {
                 SecureRandom sr = SecureRandom.getInstance("SHA1PRNG", "SUN");
                 salt = new byte[16];
                 sr.nextBytes(salt);
@@ -53,7 +53,6 @@ public class SurveyLogingService {
             final Binary binary = doc.get("hashkey", Binary.class);
             final byte[] salt = binary.getData();
             return encryptLogings(usp, usrid, salt, false);
-
         } catch (Exception ex) {
             System.out.println(ex);
             return null;
@@ -87,7 +86,7 @@ class StartLoginService {
     public static void main(String[] args)
             throws UnsupportedEncodingException, NoSuchProviderException, NoSuchAlgorithmException {
         SurveyLogingService slt = new SurveyLogingService();
-        System.out.println(slt.decryptLoggins("1235", "7"));
+        System.out.println(slt.decryptLoggins("Name128$", "8"));
 
     }
 }

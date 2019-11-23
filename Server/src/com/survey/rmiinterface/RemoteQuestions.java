@@ -17,5 +17,7 @@ public interface RemoteQuestions extends Remote {
 	void submitAnswer(int i, String answer) throws RemoteException;  
 
 	public Vector<Question> getData() throws RemoteException;
+
+	public boolean getSurveyAccess( String username, String pass) throws RemoteException;
 	
 }

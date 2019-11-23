@@ -9,11 +9,14 @@ import java.util.List;
 import com.survey.mongoclient.SurveyQuestionService;
 import com.survey.rmiinterface.Question;
 import com.survey.rmiinterface.RemoteQuestions;
+import com.survey.rmiinterface.UserRoles;
 
 
 public class SurveyImplementation extends UnicastRemoteObject implements RemoteQuestions {
     private static final long serialVersionUID = -3763231206310491048L;
     Vector<Question> myQuestions = new Vector<Question>();
+    // Vector<UserRoles> surveyUserRoles = new Vector<UserRoles>();
+    UserRoles surveyUserRoles =  new UserRoles();
 
     SurveyImplementation() throws RemoteException {
         super();
@@ -48,6 +51,14 @@ public class SurveyImplementation extends UnicastRemoteObject implements RemoteQ
     @Override
     public Vector<Question> getData() {
     return myQuestions;
+    }
+
+    /**
+     * Generate the standerd user login for survey users
+     */
+    @Override
+    public boolean getSurveyAccess( String username, String pass){
+        return surveyUserRoles.generateUserLogin(username, pass);
     }
 
 }
