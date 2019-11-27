@@ -76,14 +76,12 @@ public class SurveyQuestionService {
     // public void deleteQuestionPane(); ?
 }
 
-
 /**
- * Debug main for SurveyQuestionService 
- * Remove once the implementaion completed
- * */
-class StartService {
-	public static void main(String[] args) {
-        SurveyQuestionService svy =  new SurveyQuestionService();
-    
-	}
-}
+ * Debug main for SurveyQuestionService Remove once the implementaion completed
+ */
+/*
+ * class StartService { public static void main(String[] args) {
+ * SurveyQuestionService svy = new SurveyQuestionService();
+ * 
+ * } }
+ */

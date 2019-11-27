@@ -15,7 +15,7 @@ public class Question implements Serializable {
 	private String[] answers;
 	private String questionText;
 	private Hashtable<String, Integer> frequencies = new Hashtable<String, Integer>();
-	
+
 	// Integer>();
 
 	public Question(String questionText, String[] answers) {
@@ -39,14 +39,14 @@ public class Question implements Serializable {
 		else
 			return n;
 	}
-	
+
 	public void addAnswer(String answer) {
 		int n = getFrequency(answer);
 		frequencies.put(answer, n + 1);
 		SurveyAnswerService aswr = new SurveyAnswerService();
-		aswr.addToAnswerPane(answer, 1, 1 );
+		aswr.addToAnswerPane(answer, 1, 1);
 	}
-	
+
 	public void addQuestionToSurvey(String questionDesc, String option) {
 
 		List<String[]> optionList = new ArrayList<>();
@@ -79,7 +79,7 @@ public class Question implements Serializable {
 			break;
 		}
 
-		if (opt_ != null && questionDesc != null){
+		if (opt_ != null && questionDesc != null) {
 			questionList.add(questionDesc);
 			optionList.add(opt_.getOption());
 		}
@@ -93,14 +93,11 @@ public class Question implements Serializable {
 	}
 }
 
-
 /**
- * Debug main for SurveyQuestionService 
- * Remove once the implementaion completed
- * */
+ * Debug main for SurveyQuestionService Remove once the implementaion completed
+ */
 class QuestService {
 	public static void main(String[] args) {
-       
-        
+
 	}
 }

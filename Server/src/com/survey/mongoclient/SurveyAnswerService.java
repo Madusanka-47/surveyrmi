@@ -75,8 +75,7 @@ public class SurveyAnswerService {
 /**
  * Debug main for SurveyQuestionService Remove once the implementaion completed
  */
-class StartService {
-    public static void main(String[] args) {
-        SurveyAnswerService anwSvy = new SurveyAnswerService();
-    }
-}
+/*
+ * class StartService { public static void main(String[] args) {
+ * SurveyAnswerService anwSvy = new SurveyAnswerService(); } }
+ */

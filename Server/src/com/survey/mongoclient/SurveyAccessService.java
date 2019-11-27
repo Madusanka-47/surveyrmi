@@ -1,7 +1,6 @@
 package com.survey.mongoclient;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.bson.Document;
@@ -14,14 +13,14 @@ import static com.mongodb.client.model.Filters.eq;
 public class SurveyAccessService {
 
     private static final String collectionName = "access_pane";
-    
-    public String getUserAccessHash(String userid){
+
+    public String getUserAccessHash(final String userid) {
         try {
-            MongoConnector dbo = new MongoConnector();
-            MongoDatabase database = dbo.getConnection();
-            Document usrDoc = database.getCollection(collectionName).find(eq("userid", userid)).first();
-            return  usrDoc.get("password").toString();
-        } catch (Exception ex) {
+            final MongoConnector dbo = new MongoConnector();
+            final MongoDatabase database = dbo.getConnection();
+            final Document usrDoc = database.getCollection(collectionName).find(eq("userid", userid)).first();
+            return usrDoc.get("password").toString();
+        } catch (final Exception ex) {
             System.out.println(ex);
             return null;
         } finally {
@@ -29,13 +28,13 @@ public class SurveyAccessService {
         }
     }
 
-    public String getUserIdByUserName(String usrname) {
+    public String getUserIdByUserName(final String usrname) {
         try {
-            MongoConnector dbo = new MongoConnector();
-            MongoDatabase database = dbo.getConnection();
-            Document usrDoc = database.getCollection(collectionName).find(eq("username", usrname)).first();
-            return  usrDoc.get("userid").toString();
-        } catch (Exception ex) {
+            final MongoConnector dbo = new MongoConnector();
+            final MongoDatabase database = dbo.getConnection();
+            final Document usrDoc = database.getCollection(collectionName).find(eq("username", usrname)).first();
+            return usrDoc.get("userid").toString();
+        } catch (final Exception ex) {
             System.out.println(ex);
             return null;
         } finally {
@@ -43,23 +42,24 @@ public class SurveyAccessService {
         }
     }
 
-    public int createPaneUser(String currntUserName, String usrname, String pswd, boolean isSuper) {
+    public int createPaneUser(final String currntUserName, final String usrname, final String pswd,
+            final boolean isSuper) {
         try {
-            byte[] salt = new byte[0];
-            MongoConnector dbo = new MongoConnector();
-            MongoDatabase database = dbo.getConnection();
-            MongoCollection<org.bson.Document> collection = database.getCollection(collectionName);
-            FindIterable<org.bson.Document> sprusr = collection.find(eq("superuser", true));
-            List<Document> newUser = new ArrayList<Document>();
-            String userid = Long.toString(collection.countDocuments() + 1);
+            final byte[] salt = new byte[0];
+            final MongoConnector dbo = new MongoConnector();
+            final MongoDatabase database = dbo.getConnection();
+            final MongoCollection<org.bson.Document> collection = database.getCollection(collectionName);
+            final FindIterable<org.bson.Document> sprusr = collection.find(eq("superuser", true));
+            final List<Document> newUser = new ArrayList<Document>();
+            final String userid = Long.toString(collection.countDocuments() + 1);
 
-            for (org.bson.Document spruser : sprusr.collation(null)) {
+            for (final org.bson.Document spruser : sprusr.collation(null)) {
                 if (spruser.get("username").equals(currntUserName)) {
                     if (!usrname.isEmpty() && !pswd.isEmpty()) {
-                        Document isAvilable = collection.find(eq("username", usrname)).first();
+                        final Document isAvilable = collection.find(eq("username", usrname)).first();
                         if (isAvilable == null) {
-                            SurveyLogingService secure = new SurveyLogingService();
-                            String hashcode = secure.encryptLogings(pswd, userid, salt, true);
+                            final SurveyLogingService secure = new SurveyLogingService();
+                            final String hashcode = secure.encryptLogings(pswd, userid, salt, true);
                             if (hashcode != null) {
                                 newUser.add(new Document("userid", userid).append("username", usrname)
                                         .append("password", hashcode).append("superuser", isSuper));
@@ -74,7 +74,7 @@ public class SurveyAccessService {
                     }
                 }
             }
-        } catch (Exception ex) {
+        } catch (final Exception ex) {
             System.out.println(ex);
             return 0;
 
@@ -88,10 +88,10 @@ public class SurveyAccessService {
 /**
  * Debug main for SurveyQuestionService Remove once the implementaion completed
  */
-class StartAccessService {
-    public static void main(String[] args) {
-        SurveyAccessService acc = new SurveyAccessService();
-        System.out.println(acc.getUserIdByUserName("dulanjan22"));
-
-    }
-}
+/*
+ * class StartAccessService { public static void main(final String[] args) {
+ * final SurveyAccessService acc = new SurveyAccessService();
+ * System.out.println(acc.getUserIdByUserName("dulanjan22"));
+ * 
+ * } }
+ */

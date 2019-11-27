@@ -20,15 +20,9 @@ public enum PublicEnum {
 	public String[] getOption() {
 		return option;
 	}
-	enum Option{
-		RANGE,
-		SINGLEOPT,
-		JOB,
-		EDULVL,
-		USEROPT,
-		CHOICE,
-		CHOICE2,
-		LOGICAL
+
+	enum Option {
+		RANGE, SINGLEOPT, JOB, EDULVL, USEROPT, CHOICE, CHOICE2, LOGICAL
 	}
 
 }

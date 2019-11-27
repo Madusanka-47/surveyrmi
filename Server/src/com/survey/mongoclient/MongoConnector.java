@@ -36,8 +36,7 @@ public class MongoConnector {
 /**
  * Debug main for SurveyQuestionService Remove once the implementaion completed
  */
-class StartMongo {
-	public static void main(String[] args) {
-		MongoConnector dbo = new MongoConnector();
-	}
-}
+/*
+ * class StartMongo { public static void main(String[] args) { MongoConnector
+ * dbo = new MongoConnector(); } }
+ */
