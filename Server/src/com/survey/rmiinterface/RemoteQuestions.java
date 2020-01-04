@@ -21,6 +21,8 @@ public interface RemoteQuestions extends Remote {
 
 	public Vector<Question> getData() throws RemoteException;
 
-	public boolean getSurveyAccess(String username, String pass) throws RemoteException;
+	// public ArrayList<Document> getSurveyAccess(String username, String pass) throws RemoteException;
+
+	public void getBasicQuestions() throws RemoteException;
 
 }

@@ -3,6 +3,9 @@ package com.survey.rmiserver;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Vector;
+
+import javax.swing.text.Document;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,9 +59,16 @@ public class SurveyImplementation extends UnicastRemoteObject implements RemoteQ
     /**
      * Generate the standerd user login for survey users
      */
+    // @Override
+    // public ArrayList<Document> getSurveyAccess( String username, String pass){
+    //     return surveyUserRoles.generateUserLogin(username, pass);
+    // }
     @Override
-    public boolean getSurveyAccess( String username, String pass){
-        return surveyUserRoles.generateUserLogin(username, pass);
+	public void getBasicQuestions() throws RemoteException {
+        myQuestions.clear();
+        Question sample  = new Question(null, null);
+		for(Question a : sample.updateVectorQuestions()){
+            myQuestions.add(a);
+        }
     }
-
 }

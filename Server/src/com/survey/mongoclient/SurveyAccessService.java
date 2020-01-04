@@ -118,8 +118,8 @@ public class SurveyAccessService {
                             fname_ = doc.get("firstname").toString();
                             lname_ = doc.get("lastname").toString();
                         }
-                        updateSet = new Document("firstname", !fname.equals(fname) ? fname_ : fname).append("lastname",
-                                !lname.equals(lname) ? lname_ : lname).append("activeuser", active);
+                        updateSet = new Document("firstname", !fname.equals(fname) ? fname_ : fname)
+                                .append("lastname", !lname.equals(lname) ? lname_ : lname).append("activeuser", active);
                         if (isPasswordReset) {
                             final SurveyLogingService secure = new SurveyLogingService();
                             final String hashcode = secure.decryptLoggins(pswd, userid);
@@ -151,11 +151,16 @@ public class SurveyAccessService {
             userList = new ArrayList<Document>();
             MongoCollection<org.bson.Document> collection = database.getCollection(collectionName);
             FindIterable<org.bson.Document> cus = null;
-            if( PARAM_ == null) {cus = collection.find();} else { cus = collection.find(eq("username", PARAM_));}
+            if (PARAM_ == null) {
+                cus = collection.find();
+            } else {
+                cus = collection.find(eq("username", PARAM_));
+            }
             for (org.bson.Document doc : cus.collation(null)) {
                 if (!Boolean.parseBoolean(doc.get("superuser").toString())) {
                     userList.add(new Document("email", doc.get("username")).append("firstname", doc.get("firstname"))
-                            .append("lastname", "lastname").append("activeuser", doc.get("activeuser")));
+                            .append("lastname", "lastname").append("activeuser", doc.get("activeuser"))
+                            .append("isSuper", doc.get("superuser")));
                 }
             }
             return userList;
@@ -204,8 +209,10 @@ public class SurveyAccessService {
 class StartAccessService {
     public static void main(final String[] args) throws Exception {
         final SurveyAccessService acc = new SurveyAccessService();
-       // acc.createPaneUser("admin@survey.com", "www.ruxian@gmail.com", "madusanka", "wettewa", false);
-       // acc.updatePaneUser("admin@survey.com", "madusanka.wettewa@gmail.com", "dulanjan", "madusanka", false, false);
-    //    System.out.println( acc.getUserDetails("madusanka.wettewa@gmail.com"));
+        // acc.createPaneUser("admin@survey.com", "www.ruxian@gmail.com", "madusanka",
+        // "wettewa", false);
+        // acc.updatePaneUser("admin@survey.com", "madusanka.wettewa@gmail.com",
+        // "dulanjan", "madusanka", false, false);
+        // System.out.println( acc.getUserDetails("madusanka.wettewa@gmail.com"));
     }
 }

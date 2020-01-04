@@ -91,13 +91,28 @@ public class Question implements Serializable {
 			System.out.println(ex);
 		}
 	}
+	public  ArrayList<Question> updateVectorQuestions(){
+		ArrayList<Question> QuesList = new ArrayList<Question>();
+		SurveyQuestionService svy = new SurveyQuestionService();
+        for (org.bson.Document a : svy.getBasicQuestions()) {
+            List<String> quesOptions = new ArrayList<String>();
+            quesOptions = (List<String>) a.get("Answer");
+            String[] answers = new String[quesOptions.size()];
+			answers = quesOptions.toArray(answers);
+			QuesList.add(new Question((String) a.get("Question"), answers));
+		}
+		return QuesList;
+		
+	}
 }
 
 /**
  * Debug main for SurveyQuestionService Remove once the implementaion completed
  */
-class QuestService {
-	public static void main(String[] args) {
-
-	}
-}
+// class QuestService {
+// 	public static void main(String[] args) {
+// 		Question sample  = new Question(null, null).updateVectorQuestions();
+// 		sample.updateVectorQuestions();
+// 		System.out.println(sample.updateVectorQuestions());
+// 	}
+// }

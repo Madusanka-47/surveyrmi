@@ -38,3 +38,16 @@ public class UserRoles implements Serializable {
     }
 
 }
+
+
+// class StartAccessService {
+//     public static void main(final String[] args) throws Exception {
+//         final UserRoles acc = new UserRoles();
+//         acc.generateUserLogin("admin@survey.com", "madusanka");
+//         // "wettewa", false);
+//         // acc.updatePaneUser("admin@survey.com", "madusanka.wettewa@gmail.com",
+//         // "dulanjan", "madusanka", false, false);
+//         // System.out.println( acc.getUserDetails("madusanka.wettewa@gmail.com"));
+//     }
+// }
+
