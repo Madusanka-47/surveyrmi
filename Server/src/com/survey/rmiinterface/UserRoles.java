@@ -1,9 +1,12 @@
 package com.survey.rmiinterface;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 import com.survey.mongoclient.SurveyAccessService;
 import com.survey.mongoclient.SurveyLogingService;
+
+import org.bson.Document;
 
 public class UserRoles implements Serializable {
 
@@ -14,7 +17,7 @@ public class UserRoles implements Serializable {
         super();
     }
 
-    public boolean generateUserLogin(String userName, String login) {
+    public ArrayList<Document> generateUserLogin(String userName, String login) {
         String encyPass = null;
         SurveyAccessService userInfo = new SurveyAccessService();
         SurveyLogingService surveyAccs = new SurveyLogingService();
@@ -27,10 +30,11 @@ public class UserRoles implements Serializable {
         if (!encyPass.isEmpty()) {
             String userHash = userInfo.getUserAccessHash(this.userId);
             if (encyPass.equals(userHash)) {
-                return true;
+                SurveyAccessService sas = new SurveyAccessService();
+                return sas.getUserDetails(userName);
             }
         }
-        return false;
+        return null;
     }
 
 }

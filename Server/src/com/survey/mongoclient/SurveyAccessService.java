@@ -50,6 +50,7 @@ public class SurveyAccessService {
             final boolean isSuper) {
         try {
             String pswd = generateRandomPassword(8).toString();
+            System.out.println(pswd);
             final byte[] salt = new byte[0];
             final MongoDatabase database = MongoConnector.getInstance();
             final MongoCollection<org.bson.Document> collection = database.getCollection(collectionName);
@@ -68,7 +69,8 @@ public class SurveyAccessService {
                             if (hashcode != null) {
                                 newUser.add(new Document("userid", userid).append("username", usrname)
                                         .append("firstname", fname).append("lastname", lname)
-                                        .append("password", hashcode).append("superuser", isSuper));
+                                        .append("password", hashcode).append("superuser", isSuper)
+                                        .append("activeuser", true));
                                 collection.insertMany(newUser);
                                 SurveyMailService acc = new SurveyMailService();
                                 acc.sentCreationEmail(pswd, usrname, fname, true);
@@ -94,7 +96,8 @@ public class SurveyAccessService {
         return 0;
     }
 
-    public int updatePaneUser(final String currntUserName, final String usrname, final boolean isSuper) {
+    public int updatePaneUser(final String currntUserName, final String usrname, final String fname, final String lname,
+            final boolean isSuper, final boolean isPasswordReset) {
         try {
 
             String pswd = generateRandomPassword(8).toString();
@@ -107,21 +110,28 @@ public class SurveyAccessService {
                     if (!usrname.equals("") && usrname != null) {
                         FindIterable<org.bson.Document> isAvilable = collection.find(eq("username", usrname));
                         String userid = null;
-                        String fname = null;
+                        String fname_ = null;
+                        String lname_ = null;
+                        Document updateSet = null;
                         for (org.bson.Document doc : isAvilable.collation(null)) {
                             userid = doc.get("userid").toString();
-                            fname = doc.get("firstname").toString();
+                            fname_ = doc.get("firstname").toString();
+                            lname_ = doc.get("lastname").toString();
                         }
-                        if (userid != null) {
-
+                        updateSet = new Document("firstname", !fname.equals(fname) ? fname_ : fname).append("lastname",
+                                !lname.equals(lname) ? lname_ : lname);
+                        if (isPasswordReset) {
                             final SurveyLogingService secure = new SurveyLogingService();
                             final String hashcode = secure.decryptLoggins(pswd, userid);
-                            System.out.println(hashcode);
                             if (hashcode != null) {
-                                collection.updateOne(eq("username", usrname),
-                                        new Document("$set", new Document("password", hashcode)));
+                                updateSet.append("password", hashcode);
+                            }
+                        }
+                        if (userid != null) {
+                            collection.updateOne(eq("username", usrname), new Document("$set", updateSet));
+                            if (isPasswordReset) {
                                 SurveyMailService acc = new SurveyMailService();
-                                acc.sentCreationEmail(pswd, usrname, fname, false);
+                                acc.sentCreationEmail(pswd, usrname, fname_, false);
                                 return 1;
                             }
                         }
@@ -134,13 +144,14 @@ public class SurveyAccessService {
         return 0;
     }
 
-    public ArrayList<Document> getAllusers() {
+    public ArrayList<Document> getUserDetails(String PARAM_) {
         ArrayList<Document> userList = null;
         try {
             final MongoDatabase database = MongoConnector.getInstance();
             userList = new ArrayList<Document>();
             MongoCollection<org.bson.Document> collection = database.getCollection(collectionName);
-            FindIterable<org.bson.Document> cus = collection.find();
+            FindIterable<org.bson.Document> cus = null;
+            if( PARAM_ == null) {cus = collection.find();} else { cus = collection.find(eq("username", PARAM_));}
             for (org.bson.Document doc : cus.collation(null)) {
                 if (!Boolean.parseBoolean(doc.get("superuser").toString())) {
                     userList.add(new Document("email", doc.get("username")).append("firstname", doc.get("firstname"))
@@ -193,6 +204,8 @@ public class SurveyAccessService {
 class StartAccessService {
     public static void main(final String[] args) throws Exception {
         final SurveyAccessService acc = new SurveyAccessService();
-        acc.getAllusers();
+       // acc.createPaneUser("admin@survey.com", "www.ruxian@gmail.com", "madusanka", "wettewa", false);
+       // acc.updatePaneUser("admin@survey.com", "madusanka.wettewa@gmail.com", "dulanjan", "madusanka", false, false);
+    //    System.out.println( acc.getUserDetails("madusanka.wettewa@gmail.com"));
     }
 }
