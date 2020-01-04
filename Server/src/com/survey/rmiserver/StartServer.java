@@ -4,7 +4,6 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
-import com.survey.mongoclient.SurveyAnswerService;
 import com.survey.rmiinterface.RemoteQuestions;
 
 public class StartServer {

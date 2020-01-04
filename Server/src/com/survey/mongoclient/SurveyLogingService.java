@@ -62,7 +62,6 @@ public class SurveyLogingService {
     public Document hASHmAP(String userid, byte[] salt, boolean isStore) {
         Document hashkey = null;
         try {
-            //MongoConnector dbo = new MongoConnector();
             final MongoDatabase database = MongoConnector.getInstance();
             MongoCollection<org.bson.Document> collection = database.getCollection(hashMap);
             if (!userid.isEmpty()) {
@@ -82,11 +81,11 @@ public class SurveyLogingService {
 /**
  * Debug main for SurveyQuestionService Remove once the implementaion completed
  */
-class StartLoginService {
-    public static void main(String[] args)
-            throws UnsupportedEncodingException, NoSuchProviderException, NoSuchAlgorithmException {
-        SurveyLogingService slt = new SurveyLogingService();
-        System.out.println(slt.decryptLoggins("Name128$", "8"));
+// class StartLoginService {
+//     public static void main(String[] args)
+//             throws UnsupportedEncodingException, NoSuchProviderException, NoSuchAlgorithmException {
+//         SurveyLogingService slt = new SurveyLogingService();
+//         System.out.println(slt.decryptLoggins("Name128$", "8"));
 
-    }
-}
+//     }
+// }

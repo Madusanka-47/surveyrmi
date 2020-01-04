@@ -12,7 +12,7 @@ public class SurveyAnswerService {
 
     public int addToAnswerPane(String response, int userid, int quesid) {
         try {
-            //MongoConnector dbo = new MongoConnector();
+            // MongoConnector dbo = new MongoConnector();
             final MongoDatabase database = MongoConnector.getInstance();
             MongoCollection<org.bson.Document> collection = database.getCollection(collectionName);
             if (quesid != 0 && quesid != 0) {
@@ -32,7 +32,6 @@ public class SurveyAnswerService {
     public int updateAnswerPane(String response, int userid, int quesid) {
         // Update condition needs to re modify
         try {
-            //MongoConnector dbo = new MongoConnector();
             final MongoDatabase database = MongoConnector.getInstance();
             MongoCollection<org.bson.Document> collection = database.getCollection(collectionName);
             if (!response.isEmpty()) {
@@ -52,7 +51,6 @@ public class SurveyAnswerService {
     public ArrayList<Document> getAnswerPaneAnswers(int userid) {
         ArrayList<Document> answerList = null;
         try {
-            // MongoConnector dbo = new MongoConnector();
             final MongoDatabase database = MongoConnector.getInstance();
             answerList = new ArrayList<Document>();
             MongoCollection<org.bson.Document> collection = database.getCollection(collectionName);

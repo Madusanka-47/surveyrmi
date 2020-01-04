@@ -26,7 +26,6 @@ public class MongoConnector extends MongoClient {
 					"mongodb+srv://dumalk:dumalk@cluster0-yx3nh.mongodb.net/test?retryWrites=true&w=majority"))
 							.getDatabase("survey_core");
 		}
-
 		return instance;
 	}
 }
