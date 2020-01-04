@@ -134,6 +134,29 @@ public class SurveyAccessService {
         return 0;
     }
 
+    public ArrayList<Document> getAllusers() {
+        ArrayList<Document> userList = null;
+        try {
+            final MongoDatabase database = MongoConnector.getInstance();
+            userList = new ArrayList<Document>();
+            MongoCollection<org.bson.Document> collection = database.getCollection(collectionName);
+            FindIterable<org.bson.Document> cus = collection.find();
+            for (org.bson.Document doc : cus.collation(null)) {
+                if (!Boolean.parseBoolean(doc.get("superuser").toString())) {
+                    userList.add(new Document("email", doc.get("username")).append("firstname", doc.get("firstname"))
+                            .append("lastname", "lastname"));
+                }
+            }
+            return userList;
+
+        } catch (Exception ex) {
+            System.out.println(ex);
+        } finally {
+
+        }
+        return userList;
+    }
+
     public String generateRandomPassword(int length) {
         final String CHAR_LOWER = "abcdefghijklmnopqrstuvwxyz";
         final String CHAR_UPPER = CHAR_LOWER.toUpperCase();
@@ -167,11 +190,9 @@ public class SurveyAccessService {
  * Debug main for SurveyQuestionService Remove once the implementaion completed
  */
 
-// class StartAccessService {
-//     public static void main(final String[] args) throws Exception {
-//         final SurveyAccessService acc = new SurveyAccessService();
-//         //acc.createPaneUser("admin", "madusanka.wettewa@gmail.com", "dulanjan", "madusanka", false);
-//         acc.updatePaneUser("admin", "madusanka.wettewa@gmail.com", false);
-
-//     }
-// }
+class StartAccessService {
+    public static void main(final String[] args) throws Exception {
+        final SurveyAccessService acc = new SurveyAccessService();
+        acc.getAllusers();
+    }
+}
