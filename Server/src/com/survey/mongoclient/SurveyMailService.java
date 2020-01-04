@@ -49,8 +49,10 @@ public class SurveyMailService {
         cipher = Cipher.getInstance(myEncryptionScheme);
         key = skf.generateSecret(ks);
     }
+
     /**
-     *  Function used for create the email body
+     * Function used for create the email body
+     * 
      * @param session
      * @param toEmail
      * @param subject
@@ -65,19 +67,21 @@ public class SurveyMailService {
             msg.setFrom(new InternetAddress("admin@survey.com", "@noreply"));
             msg.setReplyTo(InternetAddress.parse("admin@survey.com", false));
             msg.setSubject(subject, "UTF-8");
-            msg.setText(body, "UTF-8");
+            msg.setContent(body, "text/html");
             msg.setSentDate(new Date());
             msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail, false));
             System.out.println("Message is ready");
             Transport.send(msg);
 
-            System.out.println("EMail Sent Successfully!!");
+            System.out.println("Email Sent Successfully!!");
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
     /**
      * This function use to dycript the password from meta pane
+     * 
      * @param encryptedString
      * @return
      */
@@ -93,9 +97,11 @@ public class SurveyMailService {
         }
         return decryptedText;
     }
+
     /**
-     * This is a diffrent encryption from the survy encryption
-     * Used for encrypt passwords which are coming form outside sources.
+     * This is a diffrent encryption from the survy encryption Used for encrypt
+     * passwords which are coming form outside sources.
+     * 
      * @param unencryptedString
      * @return encryptedString
      */
@@ -114,6 +120,7 @@ public class SurveyMailService {
 
     /**
      * Get encrypted password from survey meta table
+     * 
      * @return
      * @throws UnknownHostException
      */
@@ -131,12 +138,13 @@ public class SurveyMailService {
         return "";
     }
 
-    public void sentCreationEmail(String pwd, String usermail) throws UnknownHostException {
+    public void sentCreationEmail(String pwd, String usermail, String name, boolean isNew) throws UnknownHostException {
+        final String greet = name.substring(0, 1).toUpperCase() + name.substring(1);
         final String fromEmail = "cmb7srilanka@gmail.com";
         final String password = getAccessKey();
         final String toEmail = usermail;
+        String body = null;
 
-        System.out.println("TLSEmail Start");
         Properties props = new Properties();
         props.put("mail.smtp.host", "smtp.gmail.com");
         props.put("mail.smtp.port", "587");
@@ -148,10 +156,17 @@ public class SurveyMailService {
             }
         };
         Session session = Session.getInstance(props, auth);
-
-        sendEmail(session, toEmail, "Survey Login",
-                "Hi,\n\n Your admin has created a survey account for you.\n Please use your current email and password as "
-                        + pwd + " \n\n Cheers from,\n Survey Admin.");
+        if (isNew) {
+            body = "<p>Hi " + greet
+                    + ",<br></br><br>Your admin has created a survey account for you. Please use your current email and password as <b>"
+                    + pwd + " &#128519;</b><br></br><br> Cheers, <br>Survey Admin</br>.</br></p>";
+        } else {
+            body = "<p>Hi " + greet + ",<br></br><br>We have changed your password. Please use password as <b>" + pwd
+                    + " &#128526;</b><br></br><br> Cheers, <br>Survey Admin</br>.</br></p>";
+        }
+        if (!body.equals("") && body != null) {
+            sendEmail(session, toEmail, "Survey Login", body);
+        }
 
     }
 

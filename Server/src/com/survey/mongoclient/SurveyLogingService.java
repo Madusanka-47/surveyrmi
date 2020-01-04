@@ -85,7 +85,7 @@ public class SurveyLogingService {
 //     public static void main(String[] args)
 //             throws UnsupportedEncodingException, NoSuchProviderException, NoSuchAlgorithmException {
 //         SurveyLogingService slt = new SurveyLogingService();
-//         System.out.println(slt.decryptLoggins("Name128$", "8"));
+//         System.out.println(slt.decryptLoggins("69RkUAk_", "11"));
 
 //     }
 // }
