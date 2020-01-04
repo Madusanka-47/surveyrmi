@@ -97,7 +97,7 @@ public class SurveyAccessService {
     }
 
     public int updatePaneUser(final String currntUserName, final String usrname, final String fname, final String lname,
-            final boolean isSuper, final boolean isPasswordReset) {
+            final boolean isSuper, final boolean isPasswordReset, final boolean active) {
         try {
 
             String pswd = generateRandomPassword(8).toString();
@@ -119,7 +119,7 @@ public class SurveyAccessService {
                             lname_ = doc.get("lastname").toString();
                         }
                         updateSet = new Document("firstname", !fname.equals(fname) ? fname_ : fname).append("lastname",
-                                !lname.equals(lname) ? lname_ : lname);
+                                !lname.equals(lname) ? lname_ : lname).append("activeuser", active);
                         if (isPasswordReset) {
                             final SurveyLogingService secure = new SurveyLogingService();
                             final String hashcode = secure.decryptLoggins(pswd, userid);
