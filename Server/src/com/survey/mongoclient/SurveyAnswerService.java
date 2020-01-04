@@ -12,8 +12,8 @@ public class SurveyAnswerService {
 
     public int addToAnswerPane(String response, int userid, int quesid) {
         try {
-            MongoConnector dbo = new MongoConnector();
-            MongoDatabase database = dbo.getConnection();
+            //MongoConnector dbo = new MongoConnector();
+            final MongoDatabase database = MongoConnector.getInstance();
             MongoCollection<org.bson.Document> collection = database.getCollection(collectionName);
             if (quesid != 0 && quesid != 0) {
                 collection.insertOne(
@@ -32,8 +32,8 @@ public class SurveyAnswerService {
     public int updateAnswerPane(String response, int userid, int quesid) {
         // Update condition needs to re modify
         try {
-            MongoConnector dbo = new MongoConnector();
-            MongoDatabase database = dbo.getConnection();
+            //MongoConnector dbo = new MongoConnector();
+            final MongoDatabase database = MongoConnector.getInstance();
             MongoCollection<org.bson.Document> collection = database.getCollection(collectionName);
             if (!response.isEmpty()) {
                 collection.updateOne(eq("userid", userid), new Document("$set", new Document("response", response)));
@@ -52,8 +52,8 @@ public class SurveyAnswerService {
     public ArrayList<Document> getAnswerPaneAnswers(int userid) {
         ArrayList<Document> answerList = null;
         try {
-            MongoConnector dbo = new MongoConnector();
-            MongoDatabase database = dbo.getConnection();
+            // MongoConnector dbo = new MongoConnector();
+            final MongoDatabase database = MongoConnector.getInstance();
             answerList = new ArrayList<Document>();
             MongoCollection<org.bson.Document> collection = database.getCollection(collectionName);
             FindIterable<org.bson.Document> cus = collection.find(eq("userid", userid));

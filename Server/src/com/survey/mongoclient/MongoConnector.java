@@ -1,5 +1,7 @@
 package com.survey.mongoclient;
 
+import java.net.UnknownHostException;
+
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 import com.mongodb.client.MongoDatabase;
@@ -11,32 +13,20 @@ import com.mongodb.client.MongoDatabase;
  * @author Madusanka47
  *
  */
-public class MongoConnector {
+public class MongoConnector extends MongoClient {
+	private static MongoDatabase instance = null;
 
-	MongoDatabase database = null;
+	protected MongoConnector() throws UnknownHostException, UnsupportedOperationException {
 
-	public MongoConnector() {
-		try {
-			MongoClientURI uri = new MongoClientURI(
-					"mongodb+srv://dumalk:dumalk@cluster0-yx3nh.mongodb.net/test?retryWrites=true&w=majority");
-			@SuppressWarnings("resource")
-			MongoClient mongoClient = new MongoClient(uri);
-			this.database = mongoClient.getDatabase("survey_core");
-		} catch (Exception e) {
-
-			System.out.print(e);
-		}
 	}
+	public static synchronized MongoDatabase getInstance() throws UnknownHostException {
 
-	public MongoDatabase getConnection() {
-		return this.database;
+		if (instance == null) {
+			instance = new MongoClient(new MongoClientURI(
+					"mongodb+srv://dumalk:dumalk@cluster0-yx3nh.mongodb.net/test?retryWrites=true&w=majority"))
+							.getDatabase("survey_core");
+		}
+
+		return instance;
 	}
 }
-
-/**
- * Debug main for SurveyQuestionService Remove once the implementaion completed
- */
-/*
- * class StartMongo { public static void main(String[] args) { MongoConnector
- * dbo = new MongoConnector(); } }
- */

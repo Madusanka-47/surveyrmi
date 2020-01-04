@@ -16,8 +16,8 @@ public class SurveyAccessService {
 
     public String getUserAccessHash(final String userid) {
         try {
-            final MongoConnector dbo = new MongoConnector();
-            final MongoDatabase database = dbo.getConnection();
+            // final MongoConnector dbo = new MongoConnector();
+            final MongoDatabase database = MongoConnector.getInstance();
             final Document usrDoc = database.getCollection(collectionName).find(eq("userid", userid)).first();
             return usrDoc.get("password").toString();
         } catch (final Exception ex) {
@@ -30,8 +30,8 @@ public class SurveyAccessService {
 
     public String getUserIdByUserName(final String usrname) {
         try {
-            final MongoConnector dbo = new MongoConnector();
-            final MongoDatabase database = dbo.getConnection();
+            // final MongoConnector dbo = new MongoConnector();
+            final MongoDatabase database = MongoConnector.getInstance();
             final Document usrDoc = database.getCollection(collectionName).find(eq("username", usrname)).first();
             return usrDoc.get("userid").toString();
         } catch (final Exception ex) {
@@ -46,8 +46,8 @@ public class SurveyAccessService {
             final boolean isSuper) {
         try {
             final byte[] salt = new byte[0];
-            final MongoConnector dbo = new MongoConnector();
-            final MongoDatabase database = dbo.getConnection();
+            // final MongoConnector dbo = new MongoConnector();
+            final MongoDatabase database = MongoConnector.getInstance();
             final MongoCollection<org.bson.Document> collection = database.getCollection(collectionName);
             final FindIterable<org.bson.Document> sprusr = collection.find(eq("superuser", true));
             final List<Document> newUser = new ArrayList<Document>();

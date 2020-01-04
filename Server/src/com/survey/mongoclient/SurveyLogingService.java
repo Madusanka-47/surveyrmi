@@ -62,8 +62,8 @@ public class SurveyLogingService {
     public Document hASHmAP(String userid, byte[] salt, boolean isStore) {
         Document hashkey = null;
         try {
-            MongoConnector dbo = new MongoConnector();
-            MongoDatabase database = dbo.getConnection();
+            //MongoConnector dbo = new MongoConnector();
+            final MongoDatabase database = MongoConnector.getInstance();
             MongoCollection<org.bson.Document> collection = database.getCollection(hashMap);
             if (!userid.isEmpty()) {
                 if (isStore) {

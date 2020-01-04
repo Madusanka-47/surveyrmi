@@ -14,8 +14,8 @@ public class SurveyQuestionService {
 
     public void addToQuestionPane(ArrayList<String> questions, List<String[]> options) {
         try {
-            MongoConnector dbo = new MongoConnector();
-            MongoDatabase database = dbo.getConnection();
+            // MongoConnector dbo = new MongoConnector();
+            final MongoDatabase database = MongoConnector.getInstance();
             MongoCollection<Document> collection = database.getCollection(collectionName);
             long quseId = collection.countDocuments();
             List<Document> questionSet = new ArrayList<Document>();
@@ -34,8 +34,8 @@ public class SurveyQuestionService {
     public ArrayList<Document> getBasicQuestions() {
         ArrayList<Document> questionDoc = null;
         try {
-            MongoConnector dbo = new MongoConnector();
-            MongoDatabase database = dbo.getConnection();
+            //MongoConnector dbo = new MongoConnector();
+            final MongoDatabase database = MongoConnector.getInstance();
             questionDoc = new ArrayList<Document>();
             MongoCollection<org.bson.Document> collection = database.getCollection(collectionName);
             FindIterable<org.bson.Document> cus = collection.find();
@@ -54,8 +54,8 @@ public class SurveyQuestionService {
 
     public int updateQuestionPane(String description, int quesId) {
         try {
-            MongoConnector dbo = new MongoConnector();
-            MongoDatabase database = dbo.getConnection();
+            //MongoConnector dbo = new MongoConnector();
+            final MongoDatabase database = MongoConnector.getInstance();
             if (!description.isEmpty()) {
                 MongoCollection<org.bson.Document> collection = database.getCollection(collectionName);
                 collection.updateOne(eq("quesid", quesId),
