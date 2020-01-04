@@ -155,7 +155,7 @@ public class SurveyAccessService {
             for (org.bson.Document doc : cus.collation(null)) {
                 if (!Boolean.parseBoolean(doc.get("superuser").toString())) {
                     userList.add(new Document("email", doc.get("username")).append("firstname", doc.get("firstname"))
-                            .append("lastname", "lastname"));
+                            .append("lastname", "lastname").append("activeuser", doc.get("activeuser")));
                 }
             }
             return userList;
