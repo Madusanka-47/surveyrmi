@@ -68,12 +68,50 @@ public class SurveyAnswerService {
         }
         return answerList;
     }
+
+    public String finalSurveyAnalysis(String usrname) {
+        SurveyAccessService sas = new SurveyAccessService();
+        sas.updatePaneUser("@admin", usrname, "@", "@", false, false, true);
+        ArrayList<Document> answerList = getAnswerPaneAnswers(Integer.parseInt(sas.getUserIdByUserName(usrname)));
+        int freelancePoint = 0;
+        int socialPoints = 0;
+        for( Document answer : answerList) {
+            String response = answer.get("Answers").toString();
+            int quesId = Integer.parseInt(answer.get("QuesId").toString());
+
+            switch(quesId){
+                case 0:  if (Integer.parseInt(response) < 40){freelancePoint++;}else{socialPoints++;} break;
+                case 1:  if (response.equals("Yes")){freelancePoint++;}else{socialPoints++;} break;
+                case 2:  if (response.contains("freelance")){freelancePoint++;}else{socialPoints++;} break;
+                case 3:  if (response.equals("O/L") || response.equals("A/L")) {socialPoints++;}else{freelancePoint++;} break;
+                case 4:  if (response.equals("Poor")|| response.equals("Good")){socialPoints++;}else{freelancePoint++;} break;
+                case 5:  if (response.equals("Poor")|| response.equals("Good")){freelancePoint++;}else{socialPoints++;} break;
+                case 6:  if (response.equals("Ask people")){socialPoints++;}else{freelancePoint++;} break;
+                case 7:  if (response.equals("Yes")){freelancePoint++;}else{socialPoints++;} break;
+                case 8:  if (response.equals("Take it")){freelancePoint++;}else{socialPoints++;} break;
+                case 9:  if (response.equals("Money")){freelancePoint++;}else{socialPoints++;} break;
+                case 10:  if (response.contains("free")){freelancePoint++;}else{socialPoints++;} break;
+                case 11:  if (response.equals("The Candle")){freelancePoint++;}else{socialPoints++;} break;
+                default: break;
+            }
+            
+        }
+        if (freelancePoint >= socialPoints){
+            return "freelancer";
+        }else{
+            return "social";
+        }
+
+    }
 }
 
 /**
  * Debug main for SurveyQuestionService Remove once the implementaion completed
  */
-/*
- * class StartService { public static void main(String[] args) {
- * SurveyAnswerService anwSvy = new SurveyAnswerService(); } }
- */
+
+class StartService {
+    public static void main(String[] args) {
+        SurveyAnswerService anwSvy = new SurveyAnswerService();
+        anwSvy.finalSurveyAnalysis("madusanka.wettewa@gmail.com");
+    }
+}

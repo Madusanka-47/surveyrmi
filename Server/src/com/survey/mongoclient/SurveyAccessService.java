@@ -70,7 +70,7 @@ public class SurveyAccessService {
                                 newUser.add(new Document("userid", userid).append("username", usrname)
                                         .append("firstname", fname).append("lastname", lname)
                                         .append("password", hashcode).append("superuser", isSuper)
-                                        .append("activeuser", true));
+                                        .append("activeuser", true).append("ispaticipated", false));
                                 collection.insertMany(newUser);
                                 SurveyMailService acc = new SurveyMailService();
                                 acc.sentCreationEmail(pswd, usrname, fname, true);
@@ -106,7 +106,7 @@ public class SurveyAccessService {
             final MongoCollection<org.bson.Document> collection = database.getCollection(collectionName);
             final FindIterable<org.bson.Document> sprusr = collection.find(eq("superuser", true));
             for (final org.bson.Document spruser : sprusr.collation(null)) {
-                if (spruser.get("username").equals(currntUserName)) {
+                if (spruser.get("username").equals(currntUserName) || (currntUserName.equals("@admin"))) {
                     if (!usrname.equals("") && usrname != null) {
                         FindIterable<org.bson.Document> isAvilable = collection.find(eq("username", usrname));
                         String userid = null;
@@ -118,8 +118,12 @@ public class SurveyAccessService {
                             fname_ = doc.get("firstname").toString();
                             lname_ = doc.get("lastname").toString();
                         }
-                        updateSet = new Document("firstname", !fname.equals(fname) ? fname_ : fname)
-                                .append("lastname", !lname.equals(lname) ? lname_ : lname).append("activeuser", active);
+                        updateSet = new Document("firstname",
+                                (!fname.equals(fname_) && (!fname.equals("@"))) ? fname : fname_)
+                                        .append("lastname",
+                                                (!lname.equals(lname_) && (!lname.equals("@"))) ? lname : lname_)
+                                        .append("activeuser", active)
+                                        .append("ispaticipated", currntUserName.equals("@admin") ? true : false);
                         if (isPasswordReset) {
                             final SurveyLogingService secure = new SurveyLogingService();
                             final String hashcode = secure.decryptLoggins(pswd, userid);
